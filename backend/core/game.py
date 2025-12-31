@@ -163,14 +163,35 @@ class Game:
         for p in self.players:
             if p == active_player: continue
             
+            # 1. Check Shanten (-1 means valid hand shape)
             test_hand = p.hand + [discard]
             if self.shanten_calc.calculate_shanten(test_hand) == -1:
+                
+                # 2. --- NEW: FURITEN CHECK ---
+                # Calculate the specific tiles this player was waiting for
+                # (Note: We check p.hand, NOT test_hand, because we need the waits BEFORE the ron)
+                waits = self.shanten_calc.get_waits(p.hand)
+                
+                # Create sets of (suit, value) tuples to ignore Red status
+                # e.g. "5 Man" and "Red 5 Man" are the same for Furiten rules
+                wait_ids = set((w.suit, w.value) for w in waits)
+                discard_ids = set((t.suit, t.value) for t in p.discards)
+                
+                # Intersection Check: Are ANY of my waits in my river?
+                # If yes, I am Furiten and cannot Ron.
+                if not wait_ids.isdisjoint(discard_ids):
+                    # If it's the human player, let them know why they missed the win
+                    if p == self.players[0]:
+                        ui.console.print(f"[dim]You are Tenpai, but [bold red]FURITEN[/] (Wait in River). Cannot Ron.[/]")
+                    continue # SKIP this player, deny the win
+                
+                # 3. Check Yaku (Win Conditions)
                 yaku = self.scorer.check_yaku(test_hand, p.open_melds)
                 if yaku:
-                    ui.console.print(f"\n[bold white on red] RON! {p.name} wins on {active_player.name}'s {discard}! [/]")
+                    ui.console.print(f"\n[bold white on red]RON! {p.name} wins on {active_player.name}'s {discard}![/]")
                     ui.console.print(f"Yaku: {', '.join(yaku)}")
                     ui.console.print(ui.render_hand(p))
-                    return False 
+                    return False
 
         # B. CHECK PON / KAN
         for i, p in enumerate(self.players):
@@ -179,10 +200,10 @@ class Game:
             # 1. CHECK KAN (Daiminkan)
             if p.can_kan(discard):
                 if i == 0: # Human
-                    ui.console.print(f"\n[bold cyan]👀 CHECK: You can KAN[/] ", ui.get_tile_style(discard))
+                    ui.console.print(f"\n[bold cyan]CHECK: You can KAN[/] ", ui.get_tile_style(discard))
                     choice = ui.console.input("Call Kan? (y/n): ").lower()
                     if choice == 'y':
-                        ui.console.print(f"[bold cyan]📢 YOU called KAN![/]")
+                        ui.console.print(f"[bold cyan]YOU called KAN![/]")
                         p.execute_kan(discard)
                         
                         # --- KAN SPECIFIC MECHANICS ---
@@ -207,10 +228,10 @@ class Game:
             # and didn't just Kan.
             if p.can_pon(discard) and not p.is_riichi:
                 if i == 0: 
-                    ui.console.print(f"\n[bold cyan]👀 CHECK: You can PON[/] ", ui.get_tile_style(discard))
+                    ui.console.print(f"\n[bold cyan]CHECK: You can PON[/] ", ui.get_tile_style(discard))
                     choice = ui.console.input("Call Pon? (y/n): ").lower()
                     if choice == 'y':
-                        ui.console.print(f"[bold cyan]📢 YOU called PON![/]")
+                        ui.console.print(f"[bold cyan]YOU called PON![/]")
                         p.execute_pon(discard)
                         self.active_player_index = i
                         self.skip_draw = True
