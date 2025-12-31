@@ -144,13 +144,29 @@ def print_dashboard(game, active_player_index):
     # 3. PLAYER VIEW
     me = game.players[0]
     
+    # --- NEW: Tenpai Check for UI ---
+    # We need to calculate shanten here to display status
+    # (Note: In a huge AI training loop, we wouldn't re-calc this for UI, but for CLI it's fine)
+    shanten = game.shanten_calc.calculate_shanten(me.hand)
+    
+    status_badges = []
+    
+    if me.is_riichi:
+        status_badges.append("[bold red blink] RIICHI [/]")
+    elif shanten == 0:
+        status_badges.append("[bold yellow on black] TENPAI (READY) [/]")
+    elif shanten == 1:
+        status_badges.append("[dim]1-shanten[/]")
+        
+    status_str = " ".join(status_badges)
+
     # Melds
     if me.open_melds:
         console.print(Text(f"Melds: {me.open_melds}", style="yellow"))
 
-    # Your Status
-    my_status = f"[bold red blink] RIICHI [/] " if me.is_riichi else ""
-    console.print(Text(f"Score: {me.score}  {my_status}", style="bold white"))
+    # Status Line
+    console.print(Text(f"Score: {me.score}   ", style="bold white"), end="")
+    console.print(status_str)
 
     # The Hand
     console.print(Panel(
