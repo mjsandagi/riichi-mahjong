@@ -1,1 +1,1 @@
-python -m backend.core.game
+python main.py
