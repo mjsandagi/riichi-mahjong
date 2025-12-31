@@ -141,7 +141,7 @@ def print_dashboard(game, active_player_index):
     
     console.print(Panel(opponents_table, title="Opponents"))
 
-    # 3. PLAYER VIEW (UPDATED)
+    # 3. PLAYER VIEW
     me = game.players[0]
     
     # --- Melds ---
@@ -159,11 +159,23 @@ def print_dashboard(game, active_player_index):
     
     # Add Tenpai/Waits Badge
     if shanten == 0:
-        status_line.append("[ TENPAI ] ", style="bold black on yellow")
-        status_line.append(" Waiting for: ", style="dim")
-        
-        # Calculate Waits using the new Shanten method
+        # Calculate Waits
         waits = game.shanten_calc.get_waits(me.hand)
+        
+        # --- NEW: Check Furiten for UI ---
+        wait_ids = set((w.suit, w.value) for w in waits)
+        discard_ids = set((t.suit, t.value) for t in me.discards)
+        
+        is_furiten = not wait_ids.isdisjoint(discard_ids)
+        
+        if is_furiten:
+            status_line.append("[ FURITEN ] ", style="bold white on red")
+            status_line.append(" (Win by Tsumo only) ", style="dim red")
+        else:
+            status_line.append("[ TENPAI ] ", style="bold black on yellow")
+            status_line.append(" Waiting for: ", style="dim")
+        
+        # Display the waits
         for w in waits:
             status_line.append(get_tile_style(w))
             status_line.append(" ")
