@@ -27,6 +27,8 @@ riichi-mahjong/
 -   Real-time multiplayer via WebSockets (planned)
 -   Browser-based interface (planned)
 
+![CLI Interface](assets/cli.png)
+
 ## Backend Components
 
 -   **core/**: Game engine including tile management, hand evaluation, scoring, and game table logic (completed and fully functional)
