@@ -1,4 +1,4 @@
-from tiles import Suit, Tile, Rank, Honour
+from .tiles import Suit, Tile, Rank, Honour
 
 class ShantenCalculator:
     def __init__(self):

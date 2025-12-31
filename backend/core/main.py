@@ -1,5 +1,5 @@
-from tiles import Suit, Tile, Rank, Honour
-from shanten import ShantenCalculator
+from .tiles import Suit, Tile, Rank, Honour
+from .shanten import ShantenCalculator
 
 def test_shanten():
     calc = ShantenCalculator()

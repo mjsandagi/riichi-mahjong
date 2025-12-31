@@ -1,10 +1,10 @@
 import time
-from tiles import Tile, Suit, Rank
-from wall import Wall
-from player import Player
-from shanten import ShantenCalculator
-from scorer import Scorer
-import ui  
+from .tiles import Tile, Suit, Rank
+from .wall import Wall
+from .player import Player
+from .shanten import ShantenCalculator
+from .scorer import Scorer
+from . import ui
 
 class Game:
     def __init__(self):

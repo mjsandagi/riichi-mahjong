@@ -1,5 +1,5 @@
 import random
-from tiles import create_standard_deck  # Import the function from your tile file
+from .tiles import create_standard_deck  # Import the function from your tile file
 
 class Wall:
     def __init__(self):

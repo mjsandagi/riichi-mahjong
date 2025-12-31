@@ -1,4 +1,4 @@
-from tiles import Suit, Tile
+from .tiles import Suit, Tile
 
 class Scorer:
     def __init__(self):
