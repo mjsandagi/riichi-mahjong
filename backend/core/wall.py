@@ -27,3 +27,15 @@ class Wall:
         if current_count < 5:
             next_index = 5 + (current_count * 2) 
             self.dora_indicators.append(self.dead_wall[next_index])
+            
+    def draw_replacement(self):
+        """
+        Draws a tile from the Dead Wall (for Kan).
+        In strict rules, we should also move a tile from the live wall 
+        to the dead wall to maintain 14 tiles, but for this engine,
+        popping from dead_wall is sufficient.
+        """
+        if not self.dead_wall:
+            return None
+        # Usually drawn from the 'back' of the dead wall
+        return self.dead_wall.pop()

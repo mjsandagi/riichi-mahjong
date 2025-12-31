@@ -172,31 +172,51 @@ class Game:
                     ui.console.print(ui.render_hand(p))
                     return False 
 
-        # B. CHECK PON
-        # You cannot Pon if YOU are in Riichi
+        # B. CHECK PON / KAN
         for i, p in enumerate(self.players):
             if p == active_player: continue
             
-            # Cannot call if in Riichi
-            if p.is_riichi: continue
+            # 1. CHECK KAN (Daiminkan)
+            if p.can_kan(discard):
+                if i == 0: # Human
+                    ui.console.print(f"\n[bold cyan]👀 CHECK: You can KAN[/] ", ui.get_tile_style(discard))
+                    choice = ui.console.input("Call Kan? (y/n): ").lower()
+                    if choice == 'y':
+                        ui.console.print(f"[bold cyan]📢 YOU called KAN![/]")
+                        p.execute_kan(discard)
+                        
+                        # --- KAN SPECIFIC MECHANICS ---
+                        # 1. Draw Replacement
+                        replacement = self.wall.draw_replacement()
+                        ui.console.print(f"Replacement Tile: ", ui.get_tile_style(replacement))
+                        p.draw_tile(replacement)
+                        
+                        # 2. Reveal New Dora (Standard for Daiminkan is immediate reveal)
+                        self.wall.reveal_kan_dora()
+                        ui.console.print(f"New Dora Indicator: ", ui.get_tile_style(self.wall.dora_indicators[-1]))
+                        
+                        # 3. Update State
+                        self.active_player_index = i
+                        self.skip_draw = True # We already drew the replacement
+                        return True
+                
+                # (Add Bot Kan logic here if desired)
 
-            if p.can_pon(discard):
-                # -- HUMAN INTERACTION --
+            # 2. CHECK PON (If they didn't Kan)
+            # Only check Pon if they aren't in Riichi (already handled) 
+            # and didn't just Kan.
+            if p.can_pon(discard) and not p.is_riichi:
                 if i == 0: 
-                    ui.console.print(f"\n[bold cyan] CHECK: You can PON [/] ", ui.get_tile_style(discard))
+                    ui.console.print(f"\n[bold cyan]👀 CHECK: You can PON[/] ", ui.get_tile_style(discard))
                     choice = ui.console.input("Call Pon? (y/n): ").lower()
                     if choice == 'y':
-                        ui.console.print(f"[bold cyan] YOU called PON! [/]")
+                        ui.console.print(f"[bold cyan]📢 YOU called PON![/]")
                         p.execute_pon(discard)
                         self.active_player_index = i
                         self.skip_draw = True
-                        return True 
-                
-                # -- BOT LOGIC (Disabled for clean log) --
-                # else:
-                #     pass
-
-
+                        return True
+                    
+                    
         # C. CHECK CHI (Only for the NEXT player)
         # We only check this if no one declared Pon/Ron (we returned True/False earlier if they did)
         next_p_index = (self.active_player_index + 1) % 4

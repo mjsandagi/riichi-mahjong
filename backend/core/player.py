@@ -117,3 +117,23 @@ class Player:
         meld_tiles = sorted([t1, t2, tile])
         self.open_melds.append(f"[Chi: {meld_tiles[0]} {meld_tiles[1]} {meld_tiles[2]}]")
         return True
+    
+    def can_kan(self, tile: Tile):
+        """Returns True if hand has 3 matches for the discard (Daiminkan)."""
+        return sum(1 for t in self.hand if t == tile) == 3
+
+    def execute_kan(self, tile: Tile):
+        """
+        Removes 3 tiles, creates a Kan meld.
+        """
+        removed = 0
+        new_hand = []
+        for t in self.hand:
+            if t == tile and removed < 3:
+                removed += 1
+            else:
+                new_hand.append(t)
+        
+        self.hand = new_hand
+        self.open_melds.append(f"[Kan: {tile} {tile} {tile} {tile}]")
+        return True
