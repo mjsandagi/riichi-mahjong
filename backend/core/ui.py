@@ -141,32 +141,39 @@ def print_dashboard(game, active_player_index):
     
     console.print(Panel(opponents_table, title="Opponents"))
 
-    # 3. PLAYER VIEW
+    # 3. PLAYER VIEW (UPDATED)
     me = game.players[0]
     
-    # --- NEW: Tenpai Check for UI ---
-    # We need to calculate shanten here to display status
-    # (Note: In a huge AI training loop, we wouldn't re-calc this for UI, but for CLI it's fine)
-    shanten = game.shanten_calc.calculate_shanten(me.hand)
-    
-    status_badges = []
-    
-    if me.is_riichi:
-        status_badges.append("[bold red blink] RIICHI [/]")
-    elif shanten == 0:
-        status_badges.append("[bold yellow on black] TENPAI (READY) [/]")
-    elif shanten == 1:
-        status_badges.append("[dim]1-shanten[/]")
-        
-    status_str = " ".join(status_badges)
-
-    # Melds
+    # --- Melds ---
     if me.open_melds:
         console.print(Text(f"Melds: {me.open_melds}", style="yellow"))
 
-    # Status Line
-    console.print(Text(f"Score: {me.score}   ", style="bold white"), end="")
-    console.print(status_str)
+    # --- Status Calculation ---
+    shanten = game.shanten_calc.calculate_shanten(me.hand)
+    
+    status_line = Text(f"Score: {me.score}   ", style="bold white")
+
+    # Add Riichi Badge
+    if me.is_riichi:
+        status_line.append("[ RIICHI ] ", style="bold white on red")
+    
+    # Add Tenpai/Waits Badge
+    if shanten == 0:
+        status_line.append("[ TENPAI ] ", style="bold black on yellow")
+        status_line.append(" Waiting for: ", style="dim")
+        
+        # Calculate Waits using the new Shanten method
+        waits = game.shanten_calc.get_waits(me.hand)
+        for w in waits:
+            status_line.append(get_tile_style(w))
+            status_line.append(" ")
+            
+    elif shanten == 1:
+        status_line.append("1-shanten", style="dim italic")
+    elif shanten == 2:
+        status_line.append("2-shanten", style="dim italic")
+
+    console.print(status_line)
 
     # The Hand
     console.print(Panel(
