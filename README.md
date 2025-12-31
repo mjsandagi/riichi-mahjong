@@ -53,6 +53,21 @@ riichi-mahjong/
 ### Installation
 
 1. Clone the repository
+
+```bash
+git clone https://github.com/mjsandagi/riichi-mahjong.git
+```
+
 2. Install Python dependencies via the `requirements.txt` file
-3. Run the CLI game from `backend/core/main.py`
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the CLI game via `run.sh`
+
+```powershell
+sh ./run.sh
+```
+
 4. Web interface coming soon after AI development is complete
