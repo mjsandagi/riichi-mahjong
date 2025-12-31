@@ -29,10 +29,11 @@ riichi-mahjong/
 
 ## Backend Components
 
--   **core/**: Game engine including tile management, hand evaluation, scoring, and game table logic
+-   **core/**: Game engine including tile management, hand evaluation, scoring, and game table logic (completed and fully functional)
 -   **ai/**: Various AI agents with different strategies (in development)
 -   **server/**: WebSocket server for real-time communication (planned)
 -   **tests/**: Test suites for scoring and shanten calculation
+-   **ui.py**: Command-line interface for playing the game (completed)
 
 ## Frontend Components
 
@@ -50,6 +51,6 @@ riichi-mahjong/
 ### Installation
 
 1. Clone the repository
-2. Install Python dependencies (if any)
+2. Install Python dependencies via the `requirements.txt` file
 3. Run the CLI game from `backend/core/main.py`
 4. Web interface coming soon after AI development is complete
