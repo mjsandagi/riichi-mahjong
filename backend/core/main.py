@@ -1,7 +1,52 @@
-from .tiles import Suit, Tile, Rank, Honour
-from .shanten import ShantenCalculator
+"""
+Main entry point for the Riichi Mahjong CLI game.
+
+This module provides the main() function to start a CLI game
+using the new decoupled architecture.
+
+Usage:
+    python -m backend.core.main
+    
+Or from the project root:
+    python main.py
+"""
+
+from .game_controller import CLIGameController
+from ..ai import HumanCLIAgent, RandomAgent
+
+
+def main():
+    """
+    Start a CLI game of Riichi Mahjong.
+    
+    Player 0 (East) is the human player.
+    Players 1-3 are random AI bots.
+    """
+    print("\n=== RIICHI MAHJONG ===\n")
+    
+    # Create controller with player names
+    controller = CLIGameController(["You (East)", "South", "West", "North"])
+    
+    # Set up agents
+    controller.set_agent(0, HumanCLIAgent("You"))
+    controller.set_agent(1, RandomAgent("South Bot", call_rate=0.2, riichi_rate=0.9))
+    controller.set_agent(2, RandomAgent("West Bot", call_rate=0.2, riichi_rate=0.9))
+    controller.set_agent(3, RandomAgent("North Bot", call_rate=0.2, riichi_rate=0.9))
+    
+    # Configure delays for human viewing
+    controller.turn_delay = 0.5
+    
+    # Run the game
+    final_state = controller.run_game()
+    
+    return final_state
+
 
 def test_shanten():
+    """Test function for shanten calculator (legacy)."""
+    from .tiles import Suit, Tile, Rank
+    from .shanten import ShantenCalculator
+    
     calc = ShantenCalculator()
 
     # 1. Create a Tenpai Hand (13 tiles, waiting for 1)
@@ -24,5 +69,6 @@ def test_shanten():
     print(f"Winning Hand Shanten: {shanten}")
     # Expected: -1 (Agari)
 
+
 if __name__ == "__main__":
-    test_shanten()
+    main()
