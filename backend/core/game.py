@@ -196,6 +196,41 @@ class Game:
                 # else:
                 #     pass
 
+
+        # C. CHECK CHI (Only for the NEXT player)
+        # We only check this if no one declared Pon/Ron (we returned True/False earlier if they did)
+        next_p_index = (self.active_player_index + 1) % 4
+        next_player = self.players[next_p_index]
+        
+        # You cannot Chi if you are in Riichi
+        if not next_player.is_riichi:
+            chi_options = next_player.can_chi(discard)
+            
+            if chi_options:
+                # -- HUMAN INTERACTION (If next player is YOU) --
+                if next_p_index == 0:
+                    ui.console.print(f"\n[bold green]CHECK: You can CHI[/] ", ui.get_tile_style(discard))
+                    
+                    # Display options nicely
+                    for idx, opt in enumerate(chi_options):
+                        t1 = next_player.hand[opt[0]]
+                        t2 = next_player.hand[opt[1]]
+                        ui.console.print(f"   {idx}: Use {ui.get_tile_style(t1)} and {ui.get_tile_style(t2)}")
+                    
+                    choice = ui.console.input("Call Chi? (Enter option number or 'n'): ").lower()
+                    if choice.isdigit() and int(choice) < len(chi_options):
+                        opt_idx = int(choice)
+                        chosen_indices = chi_options[opt_idx]
+                        
+                        ui.console.print(f"[bold green]YOU called CHI![/]")
+                        next_player.execute_chi(discard, chosen_indices)
+                        
+                        # Turn moves to you (which it was going to anyway, but now we skip draw)
+                        self.active_player_index = next_p_index
+                        self.skip_draw = True
+                        return True
+
+
         # ==========================
         # 4. ROTATE TURN
         # ==========================

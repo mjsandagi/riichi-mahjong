@@ -59,3 +59,61 @@ class Player:
         # Store meld (For now, just a string representation)
         self.open_melds.append(f"[Pon: {tile} {tile} {tile}]")
         return True
+    
+    # --- Chi Detection ---
+    def can_chi(self, tile: Tile):
+        """
+        Returns a list of tuples containing the indices of tiles that can form a Chi.
+        Example result: [(0, 1), (1, 2)] meaning indices 0&1 or 1&2 can form chi with target.
+        """
+        if tile.is_honour: return [] # Cannot Chi Honours
+        
+        # We need to look for neighbors. 
+        # For simplicity, let's find matching values in the same suit.
+        same_suit_indices = [i for i, t in enumerate(self.hand) if t.suit == tile.suit]
+        
+        options = []
+        val = tile.value
+        
+        # We need to find specific indices for (val-2, val-1), (val-1, val+1), (val+1, val+2)
+        # Helper to find index of a specific value in our subset
+        def find_idx(v):
+            for idx in same_suit_indices:
+                if self.hand[idx].value == v:
+                    return idx
+            return None
+
+        # 1. Low Chi: (val-2, val-1) + val
+        # e.g. Hand has 1,2. Discard is 3.
+        c1, c2 = find_idx(val-2), find_idx(val-1)
+        if c1 is not None and c2 is not None:
+            options.append((c1, c2))
+
+        # 2. Mid Chi: (val-1, val+1) + val
+        # e.g. Hand has 2,4. Discard is 3.
+        c1, c2 = find_idx(val-1), find_idx(val+1)
+        if c1 is not None and c2 is not None:
+            options.append((c1, c2))
+
+        # 3. High Chi: (val+1, val+2) + val
+        # e.g. Hand has 4,5. Discard is 3.
+        c1, c2 = find_idx(val+1), find_idx(val+2)
+        if c1 is not None and c2 is not None:
+            options.append((c1, c2))
+            
+        return options
+
+    def execute_chi(self, tile: Tile, indices):
+        """
+        Removes the two tiles at the specified indices and forms a sequence meld.
+        """
+        # We must sort indices descending to pop correctly without shifting
+        idx_a, idx_b = sorted(indices, reverse=True)
+        
+        t1 = self.hand.pop(idx_a)
+        t2 = self.hand.pop(idx_b)
+        
+        # Sort the meld components for display (e.g. 3,4,5)
+        meld_tiles = sorted([t1, t2, tile])
+        self.open_melds.append(f"[Chi: {meld_tiles[0]} {meld_tiles[1]} {meld_tiles[2]}]")
+        return True
