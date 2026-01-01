@@ -233,7 +233,7 @@ class CLIGameController(GameController):
     def __init__(self, player_names: List[str] = None):
         super().__init__(player_names)
         self._console = None
-        self.turn_delay = 0.8  # Default delay for CLI viewing
+        self.turn_delay = 0.0  # Default delay for CLI viewing [TIME DELAY PER OPPONENT'S TURN]
     
     @property
     def console(self):
