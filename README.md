@@ -38,13 +38,13 @@ riichi-mahjong/
 
 -   Complete Riichi Mahjong ruleset
 -   Fully playable via command-line interface
+-   **Modern Web Interface**: browser UI
+-   **Real-time Multiplayer**: WebSocket-based communication
 -   **Decoupled Architecture**: Game logic separated from UI
 -   **AI-Ready**: Simple interface for building custom AI agents
 -   Hand evaluation and scoring system
 -   Shanten calculation
 -   Multiple AI opponents (Random, Minimax, MCTS templates)
--   Real-time multiplayer via WebSockets (planned)
--   Browser-based interface (planned)
 
 ![CLI Interface](assets/cli.png)
 
@@ -55,7 +55,7 @@ The project uses a **decoupled architecture** that separates concerns:
 ### Core Components
 
 -   **GameEngine**: Pure game logic with no I/O. Manages game state, validates actions, and emits events.
--   **GameState**: Immutable snapshots of game state for AI decision-making and serialization.
+-   **GameState**: Immutable snapshots of game state for AI decision-making and serialisation.
 -   **Action**: Represents all possible player actions (discard, pon, chi, kan, riichi, etc.)
 -   **GameController**: Orchestrates the game loop, connecting engine with agents and UI.
 
@@ -104,10 +104,40 @@ python main.py
 
 ```bash
 python main.py              # Play CLI game (human vs 3 bots)
+python main.py --web        # Start web server (play in browser)
+python main.py --web 8080   # Start web server on port 8080
 python main.py --test       # Run a test game with all bots
 python main.py --simulate 100   # Run 100 simulated games
 python main.py --help       # Show help
 ```
+
+## Web Interface
+
+The game features a modern, browser UI:
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Start the web server:
+
+```bash
+python main.py --web
+```
+
+3. Open your browser to `http://localhost:5000`
+
+Features:
+
+-   Clean, minimalist dark theme
+-   Real-time WebSocket communication
+-   Responsive tile rendering
+-   Animated game events
+-   Full keyboard support (1-9 to select tiles, Enter to discard)
+
+![Web Interface](assets/web-ui.png)
 
 ## Direct Engine Access (for Training)
 
@@ -150,7 +180,3 @@ Run the test suite:
 ```bash
 pytest backend/core/tests/
 ```
-
-## Web Interface
-
-Web interface coming soon after AI development is complete.
