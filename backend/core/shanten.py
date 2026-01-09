@@ -142,7 +142,7 @@ class ShantenCalculator:
         
         for i in range(27): 
             if temp_counts[i] > 0:
-                # Neighbors (e.g. 2m 3m)
+                # Neighbours (e.g. 2m 3m)
                 if i % 9 < 8 and temp_counts[i+1] > 0:
                     taatsu += 1
                     temp_counts[i] -= 1

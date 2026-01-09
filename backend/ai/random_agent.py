@@ -27,7 +27,7 @@ class RandomAgent(Agent):
     
     def __init__(self, name: str = "Random Bot", call_rate: float = 0.3, riichi_rate: float = 0.8):
         """
-        Initialize the random agent.
+        Initialise the random agent.
         
         Args:
             name: Display name.

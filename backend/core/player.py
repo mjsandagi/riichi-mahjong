@@ -68,7 +68,7 @@ class Player:
         """
         if tile.is_honour: return [] # Cannot Chi Honours
         
-        # We need to look for neighbors. 
+        # We need to look for neighbours. 
         # For simplicity, let's find matching values in the same suit.
         same_suit_indices = [i for i, t in enumerate(self.hand) if t.suit == tile.suit]
         

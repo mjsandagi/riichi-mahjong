@@ -19,7 +19,7 @@ To create your own AI:
     class MyAI(Agent):
         def choose_action(self, state: GameState, available: AvailableActions) -> Action:
             # Your AI logic here
-            # Analyze state.players, state.dora_indicators, etc.
+            # Analyse state.players, state.dora_indicators, etc.
             # Return an Action from available.get_actions()
             pass
 """

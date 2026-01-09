@@ -46,7 +46,7 @@ class GameController:
     
     def __init__(self, player_names: List[str] = None):
         """
-        Initialize the controller.
+        Initialise the controller.
         
         Args:
             player_names: Names for the 4 players. Defaults to wind names.

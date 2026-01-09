@@ -53,7 +53,7 @@ class GameEngine:
     
     def __init__(self, player_names: list = None):
         """
-        Initialize the game engine.
+        Initialise the game engine.
         
         Args:
             player_names: List of 4 player names. Defaults to wind names.
@@ -115,7 +115,7 @@ class GameEngine:
     
     def setup(self) -> list[GameEvent]:
         """
-        Initialize the game: shuffle wall, deal tiles, set up dora.
+        Initialise the game: shuffle wall, deal tiles, set up dora.
         
         Returns:
             List of GameEvents that occurred during setup.

@@ -142,15 +142,15 @@ class MySimpleAI(Agent):
             elif tile.is_terminal:
                 score += 30
             
-            # Prefer isolated tiles (no neighbors)
+            # Prefer isolated tiles (no neighbours)
             else:
-                has_neighbor = False
+                has_neighbour = False
                 for t in hand:
                     if t.suit == tile_state.suit:
                         if abs(t.value - tile_state.value) <= 2:
-                            has_neighbor = True
+                            has_neighbour = True
                             break
-                if not has_neighbor:
+                if not has_neighbour:
                     score += 40
             
             scores.append(score)

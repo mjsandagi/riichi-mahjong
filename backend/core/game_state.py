@@ -1,7 +1,7 @@
 """
 Game State Module - Immutable snapshots and action definitions for Riichi Mahjong.
 
-This module provides serializable representations of game state that can be:
+This module provides serialisable representations of game state that can be:
 - Passed to AI agents for decision making
 - Sent to frontend clients via WebSocket
 - Used for game replay and analysis
@@ -73,7 +73,7 @@ class GameEventType(Enum):
 @dataclass(frozen=True)
 class TileState:
     """
-    Immutable representation of a tile for serialization.
+    Immutable representation of a tile for serialisation.
     Can be converted to/from Tile objects.
     """
     suit: int       # Suit enum value

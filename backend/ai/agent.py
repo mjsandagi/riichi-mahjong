@@ -7,7 +7,7 @@ An agent receives game state and returns an action.
 Usage:
     class MyAI(Agent):
         def choose_action(self, state, available_actions):
-            # Analyze state, return best action
+            # Analyse state, return best action
             return Action(ActionType.DISCARD, player_index, tile_index=5)
 """
 
@@ -35,7 +35,7 @@ class Agent(ABC):
     
     def __init__(self, name: str = "Agent"):
         """
-        Initialize the agent.
+        Initialise the agent.
         
         Args:
             name: Display name for the agent.
@@ -75,7 +75,7 @@ class Agent(ABC):
         """
         Called when a new game starts.
         
-        Override this to initialize any game-specific state.
+        Override this to initialise any game-specific state.
         
         Args:
             state: The initial game state after dealing.

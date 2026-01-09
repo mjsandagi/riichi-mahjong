@@ -4,7 +4,7 @@ Monte Carlo Tree Search (MCTS) Agent for Riichi Mahjong
 This module provides a template for implementing MCTS-based AI.
 MCTS is well-suited for Mahjong because:
 - Large branching factor (many possible discards)
-- Hidden information (can use determinization)
+- Hidden information (can use determinisation)
 - Complex evaluation (hard to write heuristics)
 
 TODO: Implement the following:
@@ -75,8 +75,8 @@ class MCTSAgent(Agent):
     """
     Monte Carlo Tree Search agent for Riichi Mahjong.
     
-    This is a TEMPLATE implementation. Key areas to customize:
-    1. Determinization strategy for hidden information
+    This is a TEMPLATE implementation. Key areas to customise:
+    1. Determinisation strategy for hidden information
     2. Simulation policy (random vs. heuristic)
     3. Evaluation function for terminal states
     4. Time/iteration budget
@@ -94,7 +94,7 @@ class MCTSAgent(Agent):
         simulation_depth: int = 50
     ):
         """
-        Initialize MCTS agent.
+        Initialise MCTS agent.
         
         Args:
             name: Display name
@@ -183,7 +183,7 @@ class MCTSAgent(Agent):
         Since Mahjong has hidden information (other players' hands),
         we need to sample possible configurations.
         
-        TODO: Implement determinization:
+        TODO: Implement determinisation:
         1. Clone the engine
         2. Randomly distribute unknown tiles to other players
         3. This creates a "possible world" to simulate

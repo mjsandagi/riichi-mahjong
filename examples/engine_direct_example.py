@@ -38,7 +38,7 @@ def run_engine_directly():
     
     engine.add_event_listener(log_event)
     
-    # Initialize the game
+    # Initialise the game
     print("\n--- Setting up game ---")
     engine.setup()
     

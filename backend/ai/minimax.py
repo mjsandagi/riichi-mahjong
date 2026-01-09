@@ -10,7 +10,7 @@ Note: Pure Minimax is challenging for Mahjong due to:
 Consider using:
 - Expectiminimax (handles chance nodes)
 - Alpha-beta pruning (efficiency)
-- Determinization (handle hidden info)
+- Determinisation (handle hidden info)
 - Limited depth with evaluation function
 
 TODO: Implement the following:
@@ -50,7 +50,7 @@ class MinimaxAgent(Agent):
         max_depth: int = 2
     ):
         """
-        Initialize Minimax agent.
+        Initialise Minimax agent.
         
         Args:
             name: Display name
@@ -158,8 +158,8 @@ class MinimaxAgent(Agent):
         score = 0.0
         
         # Prefer discarding isolated tiles
-        # Count neighbors in hand
-        neighbor_count = 0
+        # Count neighbours in hand
+        neighbour_count = 0
         for i, ts in enumerate(hand):
             if i == discard_idx:
                 continue
@@ -167,13 +167,13 @@ class MinimaxAgent(Agent):
             if t.suit == tile.suit:
                 if not tile.is_honour:
                     if abs(t.value - tile.value) <= 2:
-                        neighbor_count += 1
+                        neighbour_count += 1
                 else:
                     if t.value == tile.value:
-                        neighbor_count += 1
+                        neighbour_count += 1
         
-        # Fewer neighbors = better to discard
-        score -= neighbor_count * 10
+        # Fewer neighbours = better to discard
+        score -= neighbour_count * 10
         
         # Prefer discarding honors (unless we have 2+)
         if tile.is_honour:
