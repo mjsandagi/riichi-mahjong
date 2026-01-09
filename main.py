@@ -5,8 +5,10 @@ Riichi Mahjong - Main Entry Point
 This is the main entry point for running the Riichi Mahjong game.
 
 Usage:
-    python main.py          # Start a CLI game
-    python main.py --test   # Run a test game with all bots
+    python main.py              # Start a CLI game
+    python main.py --web        # Start the web server (play in browser)
+    python main.py --test       # Run a test game with all bots
+    python main.py --simulate N # Run N simulated games
 
 The game uses a decoupled architecture where:
 - GameEngine handles pure game logic (no I/O)
@@ -16,6 +18,12 @@ The game uses a decoupled architecture where:
 """
 
 import sys
+
+
+def run_web_server(host='0.0.0.0', port=5000, debug=False):
+    """Run the web server for browser-based play."""
+    from backend.server.main import run_server
+    run_server(host=host, port=port, debug=debug)
 
 
 def run_cli_game():
@@ -128,6 +136,9 @@ def main():
         arg = sys.argv[1].lower()
         if arg == "--test":
             run_test_game()
+        elif arg == "--web":
+            port = int(sys.argv[2]) if len(sys.argv) > 2 else 5000
+            run_web_server(port=port, debug=True)
         elif arg == "--simulate":
             num = int(sys.argv[2]) if len(sys.argv) > 2 else 100
             run_simulation(num)
